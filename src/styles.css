@@ -1,0 +1,181 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * MakinItHome design system — warm handmade marketplace.
+ * Etsy-inspired: cream paper ground, terracotta/orange action colour,
+ * near-black ink, serif display + humanist sans.
+ * All colours are oklch tokens. Never hardcode colour utilities.
+ */
+
+@theme inline {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --shadow-card: 0 1px 2px oklch(0.25 0.03 60 / 0.06), 0 8px 24px oklch(0.25 0.03 60 / 0.07);
+  --shadow-lift: 0 2px 6px oklch(0.25 0.03 60 / 0.08), 0 18px 40px oklch(0.25 0.03 60 / 0.12);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.008 85);
+  --foreground: oklch(0.22 0.015 60);
+  --surface: oklch(1 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.015 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.015 60);
+
+  /* near-black ink buttons, like Etsy's primary CTA */
+  --primary: oklch(0.24 0.015 60);
+  --primary-foreground: oklch(0.985 0.008 85);
+
+  --secondary: oklch(0.955 0.014 85);
+  --secondary-foreground: oklch(0.28 0.02 60);
+
+  --muted: oklch(0.955 0.012 85);
+  --muted-foreground: oklch(0.52 0.02 65);
+
+  --accent: oklch(0.93 0.03 90);
+  --accent-foreground: oklch(0.28 0.02 60);
+
+  /* terracotta / marketplace orange */
+  --brand: oklch(0.63 0.18 42);
+  --brand-foreground: oklch(0.99 0.005 85);
+
+  --success: oklch(0.52 0.11 155);
+  --success-foreground: oklch(0.99 0.005 85);
+  --warning: oklch(0.78 0.14 78);
+  --warning-foreground: oklch(0.25 0.02 60);
+  --destructive: oklch(0.56 0.2 27);
+  --destructive-foreground: oklch(0.99 0.005 85);
+
+  --border: oklch(0.9 0.012 80);
+  --input: oklch(0.88 0.014 80);
+  --ring: oklch(0.63 0.18 42);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 84rem;
+  padding-inline: 1rem;
+}
+
+@utility card-surface {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.1rem;
+  background-color: var(--color-surface);
+}
+
+@utility skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 25%,
+    var(--color-accent) 37%,
+    var(--color-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
