@@ -1,0 +1,11 @@
+node_modules
+.output
+.vinxi
+.tanstack
+.nitro
+dist
+dist-ssr
+.env
+.env.local
+*.log
+.git
