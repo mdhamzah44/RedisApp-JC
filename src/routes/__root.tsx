@@ -110,6 +110,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Products without a real photo yet fall back to a placehold.co image (see
+      // catalog.server.ts placeholderImage()), which shows up on almost every
+      // listing/category page — worth the early connection.
+      { rel: "preconnect", href: "https://placehold.co" },
       // Loaded non-render-blocking: the browser treats a `media="print"` stylesheet as
       // low priority and doesn't block first paint on it, then the inline `onload`
       // flips it to `all` once it lands. `display=swap` already avoids invisible text,

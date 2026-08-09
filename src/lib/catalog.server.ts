@@ -49,9 +49,12 @@ function hashRand(seed: string, salt = 1): number {
 }
 
 function placeholderImage(): string {
+  // 640x640 instead of 1000x1000: the card/tile it renders into never displays
+  // wider than ~665px CSS pixels, so the larger size was pure wasted transfer
+  // (flagged by Lighthouse's "Improve image delivery" audit).
   return process.env["PLACEHOLDER_IMAGE_URL"] && process.env["PLACEHOLDER_IMAGE_URL"] !== "none"
     ? process.env["PLACEHOLDER_IMAGE_URL"]!
-    : "https://placehold.co/1000x1000/E4E7D9/2C3B26.png?text=Photo+coming+soon";
+    : "https://placehold.co/640x640/E4E7D9/2C3B26.png?text=Photo+coming+soon";
 }
 
 function productImages(doc: Document): string[] {

@@ -1,7 +1,9 @@
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 
+import { AdaptiveImage } from "@/components/AdaptiveImage";
 import { Browse, type BrowseSearch } from "@/components/Browse";
 import { categoryBySlug, products } from "@/data/catalog";
+import { categoryImageLqip } from "@/data/category-images";
 import { validateBrowseSearch } from "@/lib/browse-search";
 import { absoluteUrl, canonicalLink, SITE_URL } from "@/lib/seo";
 
@@ -121,12 +123,14 @@ function CategoryPage() {
               ))}
             </ul>
           </div>
-          <img
+          <AdaptiveImage
             src={category.image}
+            lowQualitySrc={categoryImageLqip[category.image]}
             alt={`${category.name} at MakinItHome`}
             width={1024}
             height={768}
-            className="hidden h-56 w-full object-cover md:block"
+            priority
+            wrapperClassName="hidden h-56 w-full md:block"
           />
         </div>
       </section>

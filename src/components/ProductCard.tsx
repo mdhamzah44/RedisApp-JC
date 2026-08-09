@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Heart, Zap } from "lucide-react";
 import { memo } from "react";
 
+import { AdaptiveImage } from "@/components/AdaptiveImage";
 import { StarRating } from "@/components/StarRating";
 import { Button } from "@/components/ui/button";
 import { sellerBySlug, type Product } from "@/data/catalog";
@@ -21,14 +22,14 @@ function ProductCardBase({ product, priority = false }: { product: Product; prio
         params={{ slug: product.slug }}
         className="relative block overflow-hidden rounded-xl border border-border bg-card"
       >
-        <img
+        <AdaptiveImage
           src={product.image}
           alt={`${product.name} — handmade ${product.materials[0]?.toLowerCase()}`}
           width={1024}
           height={768}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          priority={priority}
+          wrapperClassName="aspect-[4/3] w-full"
+          className="transition-transform duration-500 group-hover:scale-[1.04]"
         />
         {off > 0 && (
           <span className="absolute left-2 top-2 rounded-full bg-brand px-2 py-0.5 text-[11px] font-semibold text-brand-foreground">

@@ -40,6 +40,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-brand-ink: var(--brand-ink);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -83,6 +84,10 @@
      text-brand meets 4.5:1 contrast against the cream background/white cards
      (was ~3.6:1, an AA contrast failure). */
   --brand: oklch(0.55 0.18 42);
+  /* Darker text-only variant of --brand: the plain --brand value fails WCAG AA
+     (≈4:1) for small text once it sits on a tinted chip (bg-brand/10) instead of
+     a flat page background. Used only for text/icons, never as a fill. */
+  --brand-ink: oklch(0.46 0.18 42);
   --brand-foreground: oklch(0.99 0.005 85);
 
   --success: oklch(0.52 0.11 155);

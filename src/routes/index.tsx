@@ -2,24 +2,40 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BadgeIndianRupee, Leaf, RotateCcw, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { useMemo } from "react";
 
+import { AdaptiveImage } from "@/components/AdaptiveImage";
 import { AiAssistantButton } from "@/components/AiAssistantButton";
 import type { BrowseSearch } from "@/components/Browse";
 import { ProductCard } from "@/components/ProductCard";
-import { StorePage } from "@/components/StorePage";
 import { Button } from "@/components/ui/button";
 import { categories, products, sellers } from "@/data/catalog";
 import { productBySlug } from "@/data/catalog";
 import { sellerBySlug } from "@/data/catalog";
+import { categoryImageLqip } from "@/data/category-images";
 import { validateBrowseSearch } from "@/lib/browse-search";
 import { getSiteMode } from "@/lib/site-mode";
 import { useAppState } from "@/lib/store";
-import heroImage from "@/assets/hero-fallback.jpg";
+import { lazy, Suspense } from "react";
 import hero480 from "@/assets/hero-480.webp";
 import hero800 from "@/assets/hero-800.webp";
 import hero1200 from "@/assets/hero-1200.webp";
 import hero1600 from "@/assets/hero-1600.webp";
 
 const heroSrcSet = `${hero480} 480w, ${hero800} 800w, ${hero1200} 1200w, ${hero1600} 1600w`;
+const heroVariants = [
+  { src: hero480, width: 480 },
+  { src: hero800, width: 800 },
+  { src: hero1200, width: 1200 },
+  { src: hero1600, width: 1600 },
+];
+const HERO_LQIP =
+  "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JZACdMoR4GCxN1laKjSmEWy/4fAD+x2WGJ3Ln6CckD2xE3DrrNCZWhK5BP3o/WtNIUIpTynG+ZjA4v9GFZ5TtjA84K1PJ+SFXy596vI9N7M4Ctp+alqNUfZ34UnCUoZLooh0BMJf0v1ec+BHqS5mIgWgvnRW+z2XcohFaPTIqJYx65xABa6Kmq9SfkaJA6gAAAA==";
+
+// Code-split: the seller-storefront page is only rendered when the request comes in
+// on a merchant's own custom domain (a small fraction of traffic). Keeping it out of
+// the main marketplace-homepage chunk trims the JS most shoppers never touch.
+const StorePage = lazy(() =>
+  import("@/components/StorePage").then((m) => ({ default: m.StorePage })),
+);
 
 export const Route = createFileRoute("/")({
   validateSearch: validateBrowseSearch,
@@ -63,18 +79,20 @@ function HomeRoute() {
 
   if (store) {
     return (
-      <StorePage
-        seller={store}
-        standalone
-        search={search}
-        onChange={(next: Partial<BrowseSearch>) =>
-          void navigate({
-            to: "/",
-            search: (prev: BrowseSearch) => ({ ...prev, page: 1, ...next }),
-            replace: true,
-          })
-        }
-      />
+      <Suspense fallback={null}>
+        <StorePage
+          seller={store}
+          standalone
+          search={search}
+          onChange={(next: Partial<BrowseSearch>) =>
+            void navigate({
+              to: "/",
+              search: (prev: BrowseSearch) => ({ ...prev, page: 1, ...next }),
+              replace: true,
+            })
+          }
+        />
+      </Suspense>
     );
   }
   return <Home />;
@@ -146,22 +164,20 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative">
-        <picture>
-          <source type="image/webp" srcSet={heroSrcSet} sizes="100vw" />
-          <img
-            src={heroImage}
-            alt="Handmade cane and teak furniture styled in a sunlit Indian living room"
-            width={1600}
-            height={912}
-            fetchPriority="high"
-            decoding="async"
-            className="h-[420px] w-full object-cover md:h-[520px]"
-          />
-        </picture>
+        <AdaptiveImage
+          alt="Handmade cane and teak furniture styled in a sunlit Indian living room"
+          width={1600}
+          height={912}
+          priority
+          variants={heroVariants}
+          lowQualitySrc={HERO_LQIP}
+          sizes="100vw"
+          wrapperClassName="h-[420px] w-full md:h-[520px]"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
         <div className="container-page absolute inset-0 flex items-center">
           <div className="max-w-xl">
-            <p className="pill bg-brand/10 text-brand">Made by hand · Made in India</p>
+            <p className="pill bg-brand/10 text-brand-ink">Made by hand · Made in India</p>
             <h1 className="mt-4 font-display text-4xl leading-tight md:text-5xl">
               Pieces with a maker's name on them.
             </h1>
@@ -221,13 +237,14 @@ function Home() {
                 search={{ page: 1 }}
                 className="group overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lift"
               >
-                <img
+                <AdaptiveImage
                   src={c.image}
+                  lowQualitySrc={categoryImageLqip[c.image]}
                   alt={c.name}
                   width={1024}
                   height={768}
-                  loading="lazy"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  wrapperClassName="aspect-[4/3] w-full"
+                  className="transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="p-3">
                   <p className="font-medium">{c.name}</p>
@@ -259,7 +276,7 @@ function Home() {
         <section className="mt-16 overflow-hidden rounded-2xl bg-secondary">
           <div className="grid items-center gap-6 md:grid-cols-2">
             <div className="p-8">
-              <p className="pill bg-brand/10 text-brand">
+              <p className="pill bg-brand/10 text-brand-ink">
                 <Leaf className="mr-1 inline size-3" /> Slow made
               </p>
               <h2 className="mt-3 font-display text-3xl">The cane revival</h2>
@@ -274,13 +291,13 @@ function Home() {
                 </Link>
               </Button>
             </div>
-            <img
+            <AdaptiveImage
               src={categories[0]!.image}
+              lowQualitySrc={categoryImageLqip[categories[0]!.image]}
               alt="Hand-woven cane furniture"
               width={1024}
               height={768}
-              loading="lazy"
-              className="h-full max-h-72 w-full object-cover"
+              wrapperClassName="h-full max-h-72 w-full"
             />
           </div>
         </section>
