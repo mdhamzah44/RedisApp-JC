@@ -212,6 +212,7 @@ function RootShell({ children }: { children: ReactNode }) {
           <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
         </noscript>
        <meta name="yandex-verification" content="c5c3f1733addbcd3" />
+       <meta name="naver-site-verification" content="naver5480e52f52d0660977475c33ea88c284" />
       </head>
        
       <body>
