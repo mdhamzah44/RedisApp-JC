@@ -65,7 +65,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Try again
           </button>
-          
+          <a
             href="/"
             className="inline-flex items-center justify-center rounded-full border border-input px-5 py-2.5 text-sm font-medium"
           >
@@ -215,7 +215,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      
+      <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
       >
