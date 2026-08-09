@@ -251,7 +251,13 @@ export function StorePage({
               {seller.supportEmail && (
                 <li className="flex gap-2">
                   <Mail className="mt-0.5 size-3.5 shrink-0" />
-                  <a href={`mailto:${seller.supportEmail}`} className="hover:text-foreground">
+                  {/* See the footer's note on suppressHydrationWarning — Cloudflare's Email
+                      Address Obfuscation rewrites this href/text before React hydrates. */}
+                  <a
+                    href={`mailto:${seller.supportEmail}`}
+                    className="hover:text-foreground"
+                    suppressHydrationWarning
+                  >
                     {seller.supportEmail}
                   </a>
                 </li>

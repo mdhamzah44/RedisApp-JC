@@ -79,8 +79,10 @@
   --accent: oklch(0.93 0.03 90);
   --accent-foreground: oklch(0.28 0.02 60);
 
-  /* terracotta / marketplace orange */
-  --brand: oklch(0.63 0.18 42);
+  /* terracotta / marketplace orange — darkened from 0.63 to 0.55 lightness so
+     text-brand meets 4.5:1 contrast against the cream background/white cards
+     (was ~3.6:1, an AA contrast failure). */
+  --brand: oklch(0.55 0.18 42);
   --brand-foreground: oklch(0.99 0.005 85);
 
   --success: oklch(0.52 0.11 155);
@@ -92,7 +94,7 @@
 
   --border: oklch(0.9 0.012 80);
   --input: oklch(0.88 0.014 80);
-  --ring: oklch(0.63 0.18 42);
+  --ring: oklch(0.55 0.18 42);
 }
 
 @layer base {

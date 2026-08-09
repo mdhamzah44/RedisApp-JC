@@ -11,7 +11,9 @@ export function StarRating({
 }) {
   return (
     <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-      <span className="flex" aria-label={`Rated ${rating} out of 5`}>
+      {/* A plain <span> has the implicit ARIA role "generic", which does not permit an
+          accessible name — role="img" is what makes aria-label valid here. */}
+      <span className="flex" role="img" aria-label={`Rated ${rating} out of 5`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}

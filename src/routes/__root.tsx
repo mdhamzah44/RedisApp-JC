@@ -22,6 +22,9 @@ import appCss from "../styles.css?url";
 
 type RootData = { catalog: CatalogData; site: SiteMode };
 
+const GOOGLE_FONTS_HREF =
+  "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
@@ -107,9 +110,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Loaded non-render-blocking: the browser treats a `media="print"` stylesheet as
+      // low priority and doesn't block first paint on it, then the inline `onload`
+      // flips it to `all` once it lands. `display=swap` already avoids invisible text,
+      // and the <noscript> fallback below covers the no-JS case.
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap",
+        href: GOOGLE_FONTS_HREF,
+        media: "print",
+        // eslint-disable-next-line @typescript-eslint/naming-convention -- raw HTML attribute, not a React event prop
+        onload: "this.media='all'",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -117,12 +127,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
     ],
     scripts: [
-      // Google Tag Manager — kept first so it fires as early as possible.
+      // Google Tag Manager — loaded after the page is interactive rather than
+      // immediately, so its (mostly-unused-on-first-paint) JS doesn't compete with
+      // the initial render or add to Total Blocking Time. `gtm.start` is still stamped
+      // right away so time-to-load metrics inside GTM stay accurate; only the network
+      // fetch of gtm.js is deferred, and only by a tick or two in practice.
       {
         children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+new Date().getTime(),event:'gtm.js'});
+function loadGtm(){var f=d.getElementsByTagName(s)[0],j=d.createElement(s),
+dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}
+if(d.readyState==='complete'){loadGtm();}else{w.addEventListener('load',loadGtm);}
 })(window,document,'script','dataLayer','GTM-N9TQHDBG');`,
       },
       {
@@ -187,6 +203,9 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <noscript>
+          <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
+        </noscript>
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}

@@ -13,7 +13,13 @@ import { sellerBySlug } from "@/data/catalog";
 import { validateBrowseSearch } from "@/lib/browse-search";
 import { getSiteMode } from "@/lib/site-mode";
 import { useAppState } from "@/lib/store";
-import heroImage from "@/assets/hero.jpg";
+import heroImage from "@/assets/hero-fallback.jpg";
+import hero480 from "@/assets/hero-480.webp";
+import hero800 from "@/assets/hero-800.webp";
+import hero1200 from "@/assets/hero-1200.webp";
+import hero1600 from "@/assets/hero-1600.webp";
+
+const heroSrcSet = `${hero480} 480w, ${hero800} 800w, ${hero1200} 1200w, ${hero1600} 1600w`;
 
 export const Route = createFileRoute("/")({
   validateSearch: validateBrowseSearch,
@@ -31,7 +37,16 @@ export const Route = createFileRoute("/")({
         content: "Handmade furniture, lighting, textiles and decor from verified Indian makers.",
       },
     ],
-    links: [{ rel: "preload", as: "image", href: heroImage, fetchpriority: "high" }],
+    links: [
+      {
+        rel: "preload",
+        as: "image",
+        href: hero1200,
+        fetchpriority: "high",
+        imagesrcset: heroSrcSet,
+        imagesizes: "100vw",
+      },
+    ],
   }),
   component: HomeRoute,
 });
@@ -131,14 +146,18 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative">
-        <img
-          src={heroImage}
-          alt="Handmade cane and teak furniture styled in a sunlit Indian living room"
-          width={1920}
-          height={900}
-          fetchPriority="high"
-          className="h-[420px] w-full object-cover md:h-[520px]"
-        />
+        <picture>
+          <source type="image/webp" srcSet={heroSrcSet} sizes="100vw" />
+          <img
+            src={heroImage}
+            alt="Handmade cane and teak furniture styled in a sunlit Indian living room"
+            width={1600}
+            height={912}
+            fetchPriority="high"
+            decoding="async"
+            className="h-[420px] w-full object-cover md:h-[520px]"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
         <div className="container-page absolute inset-0 flex items-center">
           <div className="max-w-xl">

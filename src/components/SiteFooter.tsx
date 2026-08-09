@@ -43,7 +43,13 @@ export function SiteFooter() {
             <p className="mt-4 text-xs text-muted-foreground">
               MakinItHome Retail Pvt Ltd, 4th Floor, Prestige Atrium, MG Road, Bengaluru 560001
               <br />
-              support@makinithome.in · +91 80 4718 2200
+              {/* Cloudflare's Email Address Obfuscation rewrites this address in the HTML
+                  before React hydrates client-side, so the DOM text React sees on mount
+                  never matches what it originally rendered on the server. That's an
+                  intentional, expected divergence from a trusted edge feature (not a
+                  bug in this component), so we tell React to skip comparing this node —
+                  see https://react.dev/reference/react-dom/client/hydrateRoot#suppressing-unavoidable-hydration-mismatch-errors */}
+              <span suppressHydrationWarning>support@makinithome.in</span> · +91 80 4718 2200
             </p>
           </div>
         )}

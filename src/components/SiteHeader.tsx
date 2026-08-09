@@ -2,11 +2,11 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Heart, Menu, Search, ShoppingBag, Sparkles, User, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { AiAssistant } from "@/components/AiAssistant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { categories, sellerBySlug } from "@/data/catalog";
+import { useAiAssistantOpen } from "@/lib/ai-assistant-state";
 import { correctQuery, suggest } from "@/lib/search";
 import { getSiteMode } from "@/lib/site-mode";
 import { useAppState } from "@/lib/store";
@@ -15,7 +15,7 @@ export function SiteHeader() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
+  const [, setAiOpen] = useAiAssistantOpen();
   const boxRef = useRef<HTMLDivElement>(null);
 
   const site = getSiteMode();
@@ -267,8 +267,6 @@ export function SiteHeader() {
           </li>
         </ul>
       </nav>
-
-      <AiAssistant open={aiOpen} onOpenChange={setAiOpen} />
     </header>
   );
 }
