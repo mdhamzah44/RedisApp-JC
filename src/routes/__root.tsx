@@ -207,10 +207,11 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        <meta name="naver-site-verification" content="" />
+        
         <noscript>
           <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
         </noscript>
+        <meta name="naver-site-verification" content="" />
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}
