@@ -1,29 +1,12 @@
-# Marketplace Customers
+# Vercel Flask Redirect App
 
-A marketplace storefront for handmade Indian furniture and home decor — built with TanStack Start, TypeScript, React and Tailwind CSS.
+Deploy this folder to Vercel.
 
-## Development
+All routes instantly redirect to:
 
-You need Node.js (or Bun) installed.
+https://1antiq.in
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Scripts
-
-- `npm run dev` — start the dev server
-- `npm run build` — production build
-- `npm run preview` — preview the production build locally
-- `npm run lint` — run ESLint
-- `npm run format` — run Prettier
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+Files:
+- app.py
+- requirements.txt
+- vercel.json
